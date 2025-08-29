@@ -26,10 +26,11 @@ export default function Portfolio() {
             onClick={() => navigate(`/project/${p.slug}`)}
           >
             <img
-              src={`${BASE}${p.heroImage}`}
+              src={`${BASE}/uploads/${p.heroImage}`}
               alt={p.title}
               className="w-full h-56 object-cover"
             />
+
             <div className="p-4">
               <h3 className="text-lg font-semibold">{p.title}</h3>
               <p className="text-gray-600">{p.shortDescription}</p>
