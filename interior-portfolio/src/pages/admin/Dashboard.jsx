@@ -5,7 +5,6 @@ import api from "../../lib/api";
 export default function Dashboard() {
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
-  const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const load = () => api.get("/projects").then((r) => setItems(r.data));
   useEffect(() => {
@@ -22,6 +21,7 @@ export default function Dashboard() {
     await api.post("/auth/logout");
     navigate("/admin/login");
   };
+  const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -51,6 +51,7 @@ export default function Dashboard() {
               alt={p.title}
               className="w-full h-56 object-cover"
             />
+
             <div className="p-4">
               <h3 className="font-semibold">{p.title}</h3>
               <p className="text-gray-500 text-sm">{p.shortDescription}</p>

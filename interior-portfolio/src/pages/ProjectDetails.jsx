@@ -6,7 +6,6 @@ import api from "../lib/api";
 export default function ProjectDetail() {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
-  const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     api
@@ -14,6 +13,8 @@ export default function ProjectDetail() {
       .then((res) => setProject(res.data))
       .catch(console.error);
   }, [slug]);
+
+  const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   if (!project) return <p className="text-center mt-10">Loading...</p>;
 
