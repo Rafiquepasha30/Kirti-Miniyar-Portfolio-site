@@ -6,6 +6,7 @@ import api from "../lib/api";
 export default function ProjectDetail() {
   const { slug } = useParams();
   const [project, setProject] = useState(null);
+  const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     api
@@ -29,7 +30,7 @@ export default function ProjectDetail() {
           {/* Project Image */}
           <div className="overflow-hidden rounded-xl">
             <img
-              src={`${import.meta.env.VITE_API_URL}${project.heroImage}`}
+              src={`${BASE}/uploads/${project.heroImage}`}
               alt={project.title}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
@@ -92,7 +93,7 @@ export default function ProjectDetail() {
                   className="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition"
                 >
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${img}`}
+                    src={`${BASE}/uploads/${img}`}
                     alt={`Gallery ${i}`}
                     className="w-full h-60 object-cover hover:scale-105 transition-transform duration-500"
                   />

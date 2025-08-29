@@ -1,42 +1,40 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../lib/api";
 
 export default function Portfolio() {
-  const [items, setItems] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    api
-      .get("/projects")
-      .then((r) => setItems(r.data))
-      .catch(console.error);
-  }, []);
-
+  const [projects, setProjects] = useState([]);
   const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-  return (
-    <section id="portfolio" className="py-20 px-6 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold mb-10">Portfolio</h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {items.map((p) => (
-          <div
-            key={p._id}
-            className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden cursor-pointer"
-            onClick={() => navigate(`/project/${p.slug}`)}
-          >
-            <img
-              src={`${BASE}/uploads/${p.heroImage}`}
-              alt={p.title}
-              className="w-full h-56 object-cover"
-            />
+  useEffect(() => {
+    api.get("/projects").then((res) => setProjects(res.data));
+  }, []);
 
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{p.title}</h3>
-              <p className="text-gray-600">{p.shortDescription}</p>
-            </div>
-          </div>
-        ))}
+  return (
+    <section className="py-20 px-6 bg-gray-50" id="portfolio">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">
+          Our Portfolio
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {projects.map((p) => (
+            <Link
+              key={p._id}
+              to={`/projects/${p.slug}`}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition"
+            >
+              <img
+                src={`${BASE}/uploads/${p.heroImage}`}
+                alt={p.title}
+                className="w-full h-56 object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{p.title}</h3>
+                <p className="text-gray-600 text-sm">{p.shortDescription}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
