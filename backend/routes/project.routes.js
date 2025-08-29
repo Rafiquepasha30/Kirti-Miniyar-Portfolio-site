@@ -1,9 +1,7 @@
 import { Router } from "express";
 import Project from "../models/Project.js";
-import { requireAuth } from "../middleware/auth.js";
+import requireAuth from "../middleware/auth.js";   // ✅ fix import
 import { upload } from "../utils/upload.js";
-import path from "path";
-
 
 const router = Router();
 
@@ -12,6 +10,7 @@ router.get("/", async (_req, res) => {
   const projects = await Project.find().sort({ createdAt: -1 });
   res.json(projects);
 });
+
 router.get("/:slug", async (req, res) => {
   const project = await Project.findOne({ slug: req.params.slug });
   if (!project) return res.status(404).json({ message: "Not found" });
@@ -36,10 +35,10 @@ router.delete("/:id", requireAuth, async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
+// Image upload
 router.post("/upload", requireAuth, upload.single("image"), (req, res) => {
-  // Always convert backslashes → forward slashes
-  const filePath = `/uploads/${req.file.filename}`;
-  res.json({ url: filePath });
+  const normalized = `/uploads/${req.file.filename}`;   // ✅ cleaner
+  res.json({ url: normalized });
 });
 
 export default router;

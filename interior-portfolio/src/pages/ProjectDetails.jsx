@@ -15,6 +15,12 @@ export default function ProjectDetail() {
   }, [slug]);
 
   const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const PUBLIC_BASE = API.replace(/\/api\/?$/, "");
+
+  // helper to safely join (handles leading slash)
+  const imgURL = (path) =>
+    `${PUBLIC_BASE}${path.startsWith("/") ? "" : "/"}${path}`;
 
   if (!project) return <p className="text-center mt-10">Loading...</p>;
 
@@ -31,7 +37,7 @@ export default function ProjectDetail() {
           {/* Project Image */}
           <div className="overflow-hidden rounded-xl">
             <img
-              src={`${BASE}/uploads/${project.heroImage}`}
+              src={imgURL(project.heroImage)} // was: `${import.meta.env.VITE_API_URL}${project.heroImage}`
               alt={project.title}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
             />
@@ -88,17 +94,13 @@ export default function ProjectDetail() {
               Project Gallery
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
-              {project.gallery.map((img, i) => (
-                <div
+              {project.gallery.map((g, i) => (
+                <img
                   key={i}
-                  className="rounded-xl overflow-hidden shadow-md hover:shadow-lg transition"
-                >
-                  <img
-                    src={`${BASE}/uploads/${img}`}
-                    alt={`Gallery ${i}`}
-                    className="w-full h-60 object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+                  src={imgURL(g)} // was: `${import.meta.env.VITE_API_URL}${img}`
+                  alt={`Gallery ${i}`}
+                  className="w-full h-60 object-cover hover:scale-105 transition-transform duration-500"
+                />
               ))}
             </div>
           </div>

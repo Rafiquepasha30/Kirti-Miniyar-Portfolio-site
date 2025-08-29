@@ -14,6 +14,12 @@ export default function Portfolio() {
   }, []);
 
   const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const PUBLIC_BASE = API.replace(/\/api\/?$/, "");
+
+  // helper to safely join (handles leading slash)
+  const imgURL = (path) =>
+    `${PUBLIC_BASE}${path.startsWith("/") ? "" : "/"}${path}`;
 
   return (
     <section id="portfolio" className="py-20 px-6 max-w-7xl mx-auto">
@@ -26,7 +32,7 @@ export default function Portfolio() {
             onClick={() => navigate(`/project/${p.slug}`)}
           >
             <img
-              src={`${BASE}/uploads/${p.heroImage}`}
+              src={imgURL(p.heroImage)}
               alt={p.title}
               className="w-full h-56 object-cover"
             />
